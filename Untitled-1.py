@@ -44,6 +44,10 @@ finish = False
 clock = time.Clock()
 FPS = 60
 
+rocket1 = Player('racket.png', 30, 200, 100, 100, 50)
+rocket2 = Player('racket.png', 520, 200, 100, 100, 50)
+ball = GameSprite('tenis_ball.png', 200, 200, 50, 50, 10)
+
 speed_x = 3
 speed_y = 3
 
@@ -54,5 +58,21 @@ while game:
             game = False
     if finish != True:
         window.fill(back)
+        rocket1.update_l()
+        rocket2.update_r()
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
+        if sprite.collide_rect(rocket1, ball) or sprite.collide_rect(rocket2, ball):
+            speed_x *= -1
+            speed_y *= 1
+        if ball.rect.y > win_height - 50 or ball.rect.y < 0:
+            speed_y *= -1
+        if ball.rect.x < 0:
+            finish = True
+        if ball.rect.x > win_width:
+            finish = True
+        rocket1.reset()
+        rocket2.reset()
+        ball.reset()
     display.update()
     clock.tick(FPS)
